@@ -1,20 +1,58 @@
-.github
+# System junk
 .DS_Store
-docs
-kubernetes
-node_modules
-/.svelte-kit
-/package
+Thumbs.db
+
+# GitHub metadata
+.github
+.idea
+
+# Environment variables
 .env
 .env.*
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
-__pycache__
-.idea
+
+# SvelteKit & Node
+node_modules
+.svelte-kit
+dist
+build
+
+# Python
 venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Tests, old, and uploads
+_test
 _old
 uploads
-.ipynb_checkpoints
-**/*.db
-_test
+
+# SQLite or local DBs
+*.db
+
+# Kubernetes, docs, etc.
+docs/
+kubernetes/
+
+# Temporary build artifacts
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Ignore backend runtime data
 backend/data/*
+
+# Avoid copying virtualenvs from backend
+backend/venv/
+
+# Optional: also exclude other junk inside backend
+backend/__pycache__/
+backend/*.py[cod]
+backend/*.log
+backend/*.db

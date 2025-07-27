@@ -1,14 +1,23 @@
-__pycache__
-.env
-_old
-uploads
-.ipynb_checkpoints
-*.db
-_test
-!/data
-/data/*
-!/data/litellm
-/data/litellm/*
-!data/litellm/config.yaml
+# Python cache and venv
+__pycache__/
+*.py[cod]
+venv/
 
+# Data & logs
+*.db
+*.log
+
+# Env files
+.env
+
+# Dev junk
+_old/
+_test/
+uploads/
+.ipynb_checkpoints/
+
+# Dockerignore logic to keep config but exclude heavy data
+data/*
+!data/litellm/
+!data/litellm/config.yaml
 !data/config.json

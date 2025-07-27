@@ -1,9 +1,7 @@
 <script>
 	import DOMPurify from 'dompurify';
 	import { marked } from 'marked';
-
 	import { toast } from 'svelte-sonner';
-
 	import { onMount, getContext, tick } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -22,14 +20,14 @@
 	const i18n = getContext('i18n');
 
 	let loaded = false;
-
 	let mode = $config?.features.enable_ldap ? 'ldap' : 'signin';
 
 	let name = '';
 	let email = '';
 	let password = '';
-
 	let ldapUsername = '';
+	let onboarding = false;
+	let showCuiBanner = true;
 
 	const querystringValue = (key) => {
 		const querystring = window.location.search;
@@ -92,61 +90,60 @@
 	};
 
 	const checkOauthCallback = async () => {
-		if (!$page.url.hash) {
-			return;
-		}
+		if (!$page.url.hash) return;
 		const hash = $page.url.hash.substring(1);
-		if (!hash) {
-			return;
-		}
+		if (!hash) return;
+
 		const params = new URLSearchParams(hash);
 		const token = params.get('token');
-		if (!token) {
-			return;
-		}
+		if (!token) return;
+
 		const sessionUser = await getSessionUser(token).catch((error) => {
 			toast.error(`${error}`);
 			return null;
 		});
-		if (!sessionUser) {
-			return;
-		}
+		if (!sessionUser) return;
+
 		localStorage.token = token;
 		await setSessionUser(sessionUser);
 	};
 
-	let onboarding = false;
+	const getStartedHandler = () => {
+		showCuiBanner = false;
+		// Optional: persist acceptance across sessions
+		// localStorage.setItem('cuiAccepted', 'true');
+	};
 
 	async function setLogoImage() {
 		await tick();
 		const logo = document.getElementById('logo');
-
 		if (logo) {
 			const isDarkMode = document.documentElement.classList.contains('dark');
-
 			if (isDarkMode) {
 				const darkImage = new Image();
 				darkImage.src = `${WEBUI_BASE_URL}/static/favicon-dark.png`;
 
 				darkImage.onload = () => {
-					logo.src = `${WEBUI_BASE_URL}/static/favicon-dark.png`;
-					logo.style.filter = ''; // Ensure no inversion is applied if favicon-dark.png exists
+					logo.src = darkImage.src;
+					logo.style.filter = '';
 				};
 
 				darkImage.onerror = () => {
-					logo.style.filter = 'invert(1)'; // Invert image if favicon-dark.png is missing
+					logo.style.filter = 'invert(1)';
 				};
 			}
 		}
 	}
 
 	onMount(async () => {
+		// Optional: persist acceptance across sessions
+		// showCuiBanner = !localStorage.getItem('cuiAccepted');
+
 		if ($user !== undefined) {
 			const redirectPath = querystringValue('redirect') || '/';
 			goto(redirectPath);
 		}
 		await checkOauthCallback();
-
 		loaded = true;
 		setLogoImage();
 
@@ -157,7 +154,6 @@
 		}
 	});
 </script>
-
 <svelte:head>
 	<title>
 		{`${$WEBUI_NAME}`}
@@ -178,6 +174,36 @@
 	<div class="w-full absolute top-0 left-0 right-0 h-8 drag-region" />
 
 	{#if loaded}
+		<!-- CUI Banner Overlay -->
+		{#if showCuiBanner}
+			<div
+				class="w-full h-screen z-60 max-h-[100dvh] text-white absolute top-0 left-0 flex items-center justify-center bg-black/80"
+			>
+				<div class="bg-white text-black p-10 rounded-xl shadow-lg max-w-3xl text-center space-y-6">
+					<h1 class="text-3xl font-bold uppercase text-red-700">
+						DOD Controlled Unclassified Information (CUI)
+					</h1>
+					<p class="text-base leading-relaxed">
+						You are accessing a Department of Defense (DoD) information system that may contain
+						Controlled Unclassified Information (CUI). Unauthorized access or use of this system is
+						prohibited and may be subject to disciplinary action and/or criminal prosecution.
+					</p>
+					<p class="font-semibold">
+						By clicking “Accept,” you acknowledge and agree to comply with all applicable
+						regulations and guidance regarding the handling of CUI.
+					</p>
+					<div>
+						<button
+							class="bg-red-700 hover:bg-red-800 text-white font-semibold py-2 px-6 rounded transition"
+							on:click={getStartedHandler}
+						>
+							Accept
+						</button>
+					</div>
+				</div>
+			</div>
+		{/if}
+
 		<div class="fixed m-10 z-50">
 			<div class="flex space-x-2">
 				<div class=" self-center">
