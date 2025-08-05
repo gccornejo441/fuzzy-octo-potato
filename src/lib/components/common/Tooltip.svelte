@@ -4,6 +4,7 @@
 	import { onDestroy } from 'svelte';
 
 	import tippy from 'tippy.js';
+	import { decodeSnapshot } from 'yjs';
 
 	export let placement = 'top';
 	export let content = `I'm a tooltip!`;

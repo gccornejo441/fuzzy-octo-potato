@@ -14,7 +14,7 @@
 
 <style>
 .cui-banner {
-  position: fixed;
+  position: static;
   left: 0;
   right: 0;
   z-index: 1000;
@@ -44,7 +44,7 @@
 <div class="cui-banner cui-banner-top {bannerColors[level]}">
   {bannerText}
 </div>
-<div class="cui-banner-spacer"></div>
+<!-- <div class="cui-banner-spacer"></div> -->
 
 <slot />
 
