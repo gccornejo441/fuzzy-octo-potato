@@ -27,8 +27,7 @@
 	let password = '';
 	let ldapUsername = '';
 	let onboarding = false;
-	let showCuiBanner = true;
-
+z
 	const querystringValue = (key) => {
 		const querystring = window.location.search;
 		const urlParams = new URLSearchParams(querystring);

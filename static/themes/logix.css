@@ -3,96 +3,75 @@
   --black: #000000;
   --white: #ffffff;
 
-  /* Marine olive scale */
-  --olive-100: #788519;
-  --olive-200: #869132;
-  --olive-300: #6A7800;/* Marine Green */
-  --olive-400: #a6ae66;
-  --olive-500: #b4bb7f;
-  --olive-600: #c3c999;
-  --olive-700: #d2d6b2;
-  --olive-800: #f0f1e5;
-  --olive-900: #fafaf7;
-  --olive-DEFAULT: var(--olive-300);
+  /* Military green scale */
+  --military-light-bg: #dce2cf;   /* light desaturated olive */
+  --military-light-border: #5b5f3c; /* deep olive border */
+  --military-light-text: #3e4229;   /* dark olive text */
+
+  --military-dark-bg: #1b1f12;   /* near-black olive */
+  --military-dark-border: #3a3f25; /* muted olive border */
+  --military-dark-text: #aab78a;   /* pale green text */
 
   /* Logo */
   --marine-logo-url: url("../USMC-Logo.svg");
 }
 
+
+ .app > * {
+	background-color: var(--black) !important;
+}
+
+#nav {
+	background-color: var(--black);
+}
+
+#chat-input {
+  background: #1b1f12;
+  border: 1px solid #3a3f25;
+  color: #e8eed0;            /* readable on dark bg */
+
+  padding: 0.625rem 1rem;    /* taller + comfy sides */
+  border-radius: 9999px;     /* pill shape */
+  width: 100%;
+  outline: none;
+}
+
+#chat-input::placeholder {
+  color: #8a8f6a;
+  opacity: 1;                /* consistent across browsers */
+}
+
+
+
 /* ----------  SIDEBAR THEMING  ---------- */
 #sidebar {
-  /* Force same tokens for light & dark */
-  --sidebar-bg-color: var(--olive-DEFAULT); /* Marine Green */
-  --sidebar-text-color: #ffffff;            /* Always white text */
+  --sidebar-bg-color: var(--military-light-bg);
+  --sidebar-border-color: var(--military-light-border);
+  --sidebar-text-color: var(--military-light-text);
 
   background-color: var(--sidebar-bg-color);
+  border-right: 1px solid var(--sidebar-border-color);
   color: var(--sidebar-text-color);
 }
 
-/* Dark mode (kept for clarity; values match light) */
+/* Dark mode */
 .dark #sidebar {
-  --sidebar-bg-color: var(--olive-DEFAULT); /* Marine Green */
-  --sidebar-text-color: #ffffff;            /* Always white text */
+  --sidebar-bg-color: var(--military-dark-bg);
+  --sidebar-border-color: var(--military-dark-border);
+  --sidebar-text-color: var(--military-dark-text);
 }
 
-/* Apply text / stroke colour to everything inside the sidebar */
+/* Apply text / stroke color to everything inside the sidebar */
 #sidebar * {
   color: var(--sidebar-text-color) !important;
   stroke: var(--sidebar-text-color) !important;
 }
 
-/* ----------  LOGO & “NEW CHAT” LABEL  ---------- */
-#sidebar-new-chat-button .self-center.mx-1\.5 {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  border-radius: 9999px;
-  overflow: hidden;
-}
-#sidebar-new-chat-button .self-center.mx-1\.5 img {
-  opacity: 0 !important;
-  visibility: hidden !important;
-}
-#sidebar-new-chat-button .self-center.mx-1\.5::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--marine-logo-url) center/cover no-repeat;
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-/* Replace “New Chat” text with “LOGIX” */
-#sidebar-new-chat-button .self-center.text-sm {
-  color: transparent !important; /* hide original text */
-  position: relative;
-}
-#sidebar-new-chat-button .self-center.text-sm::after {
-  content: "LOGIX";
-  color: var(--sidebar-text-color) !important;
-  font-size: 1rem;
-  font-weight: 600;
-  font-family: var(--font-primary, inherit);
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ----------  SECTION LABELS  ---------- */
-/* These will be white due to the universal #sidebar * rule above.
-   Keep selectors here only if you later want to override specifically. */
-#sidebar .sidebar-section-label          { /* intentionally inherits white */ }
-.dark #sidebar .sidebar-section-label    { /* intentionally inherits white */ }
-
 /* ----------  SEARCH INPUTS  ---------- */
 #sidebar input[type="search"],
 #sidebar input.search-input {
-  background-color: var(--olive-800);
-  border: 1px solid var(--olive-600);
-  /* text color will be forced to white via #sidebar * rule */
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--sidebar-border-color);
   padding: 0.4rem 0.6rem;
   border-radius: 8px;
   width: 100%;
@@ -100,46 +79,39 @@
 }
 #sidebar input[type="search"]::placeholder,
 #sidebar input.search-input::placeholder {
-  color: var(--olive-800);
+  color: var(--sidebar-text-color);
+  opacity: 0.6;
 }
 
+/* Dark mode search inputs */
 .dark #sidebar input[type="search"],
 .dark #sidebar input.search-input {
-  background-color: var(--olive-200);
-  border: 1px solid var(--olive-400);
-  /* text color will be forced to white via #sidebar * rule */
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--sidebar-border-color);
 }
 .dark #sidebar input[type="search"]::placeholder,
 .dark #sidebar input.search-input::placeholder {
-  color: var(--olive-800);
+  color: var(--sidebar-text-color);
+  opacity: 0.6;
 }
 
-/* ----------  BASE SIDEBAR BG / TEXT  ---------- */
-#sidebar { background-color: var(--sidebar-bg-color); }
-.dark #sidebar { background-color: var(--sidebar-bg-color); }
-
-
-/* ----------  HOVER BEHAVIOR (requested)  ----------
-   On hover: background turns BLACK, text/icons turn MARINE GREEN.
-*/
-#sidebar a:hover{
-  background-color: var(--black) !important;
+/* ----------  HOVER BEHAVIOR  ---------- */
+/* On hover: darker bg, brighter text */
+#sidebar a:hover {
+  background-color: var(--sidebar-border-color) !important;
   color: var(--white) !important;
-  stroke: var(--olive-DEFAULT) !important;
+  stroke: var(--white) !important;
 }
-
-/* Ensure children inside hovered elements inherit marine green */
 #sidebar a:hover *,
 #sidebar button:hover *,
 #sidebar [role="button"]:hover * {
-color: var(--white) !important;
+  color: var(--white) !important;
   stroke: var(--white) !important;
 }
 
-/* Neutralize Tailwind hover:bg-* utilities inside the sidebar */
+/* Neutralize Tailwind hover:bg-* utilities */
 #sidebar .hover\:bg-gray-100:hover,
 #sidebar .dark\:hover\:bg-gray-900:hover,
 .dark #sidebar .dark\:hover\:bg-gray-900:hover {
-  background-color: var(--black) !important; /* our desired hover bg */
+  background-color: var(--sidebar-border-color) !important;
 }
-

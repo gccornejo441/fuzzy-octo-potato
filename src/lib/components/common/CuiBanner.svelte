@@ -3,7 +3,7 @@
 
   const bannerColors: Record<string, string> = {
     'UNCLASSIFIED': 'bg-green-700 text-white',
-    'CUI': 'bg-purple-800 text-white',
+    'CUI': 'cui-banner-cui',
     'CONFIDENTIAL': 'bg-blue-700 text-white',
     'SECRET': 'bg-red-600 text-white',
     'TOP SECRET': 'bg-orange-600 text-black',
@@ -24,7 +24,7 @@
   letter-spacing: 0.1em;
   height: 1.5rem;         
   line-height: 1.5rem;   
-  padding: 0;              
+  padding: 0;
 }
 
 .cui-banner-top {
@@ -36,7 +36,25 @@
 }
 
 .cui-banner-spacer {
-  height: 1.5rem;            
+  height: 1.5rem;
+}
+
+/* === Military green colors for CUI === */
+
+/* Light mode */
+.cui-banner-cui {
+  background-color: #dce2cf;
+  border: 1px solid #5b5f3c;
+  color: #3e4229;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .cui-banner-cui {
+    background-color: #1b1f12;
+    border: 1px solid #3a3f25;
+    color: #aab78a;
+  }
 }
 </style>
 
@@ -44,11 +62,5 @@
 <div class="cui-banner cui-banner-top {bannerColors[level]}">
   {bannerText}
 </div>
-<!-- <div class="cui-banner-spacer"></div> -->
 
 <slot />
-
-<!-- BOTTOM Banner -->
-<!-- <div class="cui-banner cui-banner-bottom {bannerColors[level]}">
-  {bannerText}
-</div> -->
